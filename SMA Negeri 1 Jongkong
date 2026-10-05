@@ -1,0 +1,887 @@
+```html
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMA NEGERI 1 JONGKONG - Official Website</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .editable-active {
+            outline: 2px dashed #f59e0b !important;
+            outline-offset: 4px;
+            border-radius: 4px;
+            cursor: text;
+        }
+        .editable-active:hover {
+            background-color: rgba(245, 158, 11, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-900">
+
+    <!-- FLOATING ADMIN BAR -->
+    <div id="admin-bar" class="hidden sticky top-0 z-50 bg-amber-500 text-slate-900 px-4 py-2.5 shadow-xl border-b border-amber-600 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-semibold">
+            <div class="flex items-center gap-2">
+                <span class="bg-slate-900 text-amber-400 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider shadow-sm">
+                    <i class="fa-solid fa-user-shield mr-1"></i> Mode Admin Aktif
+                </span>
+                <span class="hidden md:inline text-slate-800">Klik teks atau gambar di layar untuk mengedit langsung.</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="openSosmedModal()" class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-share-nodes text-amber-400"></i> Kelola Medsos
+                </button>
+                <button onclick="saveAllChanges()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                </button>
+                <button onclick="logoutAdmin()" class="bg-red-700 hover:bg-red-800 text-white px-3 py-1.5 rounded-lg transition-all shadow-sm">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOP HEADER -->
+    <div class="bg-slate-950 text-gray-300 text-xs py-2.5 px-4 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-4">
+                <span class="flex items-center"><i class="fa-solid fa-envelope text-amber-400 mr-2"></i> <span id="info-email" class="editable">info@sman1jongkong.sch.id</span></span>
+                <span class="flex items-center"><i class="fa-solid fa-phone text-amber-400 mr-2"></i> <span id="info-phone" class="editable">(0567) 123456</span></span>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-gray-400 text-[11px] uppercase tracking-wider font-semibold">Media Sosial:</span>
+                <a id="top-link-facebook" href="https://facebook.com" target="_blank" class="hover:text-amber-400 transition" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a id="top-link-instagram" href="https://instagram.com" target="_blank" class="hover:text-amber-400 transition" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a id="top-link-youtube" href="https://youtube.com" target="_blank" class="hover:text-amber-400 transition" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a id="top-link-tiktok" href="https://tiktok.com" target="_blank" class="hover:text-amber-400 transition" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                <a id="top-link-whatsapp" href="https://wa.me/628123456789" target="_blank" class="hover:text-amber-400 transition" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center">
+            <!-- LOGO & BRANDING -->
+            <div class="flex items-center gap-3.5">
+                <div class="relative group cursor-pointer" onclick="handleLogoClick()">
+                    <img id="site-logo" src="https://images.unsplash.com/photo-1592280771190-3e2e4d571952?auto=format&fit=crop&w=200&q=80" alt="Logo SMAN 1 Jongkong" class="h-12 w-12 object-cover rounded-full border-2 border-blue-900 shadow-sm transition group-hover:scale-105">
+                    <div id="logo-edit-overlay" class="hidden absolute inset-0 bg-black/60 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 id="site-title" class="editable text-lg sm:text-xl font-extrabold text-blue-950 tracking-tight leading-tight">SMA NEGERI 1 JONGKONG</h1>
+                    <p id="site-tagline" class="editable text-xs text-amber-600 font-semibold">Unggul dalam Prestasi, Berkarakter, dan Berbudaya</p>
+                </div>
+            </div>
+
+            <!-- DESKTOP MENU -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-semibold text-gray-700">
+                <a href="#beranda" class="hover:text-blue-900 transition">Beranda</a>
+                <a href="#ppdb" class="hover:text-blue-900 transition">PPDB</a>
+                <a href="#profil" class="hover:text-blue-900 transition">Profil</a>
+                <a href="#prestasi" class="hover:text-blue-900 transition">Prestasi</a>
+                <a href="#ekstrakurikuler" class="hover:text-blue-900 transition">Ekstrakurikuler</a>
+                <a href="#berita" class="hover:text-blue-900 transition">Berita</a>
+                <a href="#galeri" class="hover:text-blue-900 transition">Galeri</a>
+                <a href="#kontak" class="hover:text-blue-900 transition">Kontak</a>
+                <button id="btn-login-trigger" onclick="openLoginModal()" class="bg-blue-950 hover:bg-blue-900 text-amber-400 px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-md hover:shadow-lg flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-lock"></i> Login Admin
+                </button>
+            </nav>
+
+            <!-- MOBILE MENU BUTTON -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-gray-800 p-2 focus:outline-none text-xl">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
+
+        <!-- MOBILE MENU DROPDOWN -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 py-3 space-y-2 text-sm font-semibold shadow-xl">
+            <a href="#beranda" class="block py-1.5 hover:text-blue-900">Beranda</a>
+            <a href="#ppdb" class="block py-1.5 hover:text-blue-900">PPDB</a>
+            <a href="#profil" class="block py-1.5 hover:text-blue-900">Profil</a>
+            <a href="#prestasi" class="block py-1.5 hover:text-blue-900">Prestasi</a>
+            <a href="#ekstrakurikuler" class="block py-1.5 hover:text-blue-900">Ekstrakurikuler</a>
+            <a href="#berita" class="block py-1.5 hover:text-blue-900">Berita</a>
+            <a href="#galeri" class="block py-1.5 hover:text-blue-900">Galeri</a>
+            <a href="#kontak" class="block py-1.5 hover:text-blue-900">Kontak</a>
+            <button onclick="openLoginModal()" class="w-full text-center bg-blue-950 text-amber-400 px-4 py-2.5 rounded-lg text-xs font-bold mt-2">
+                <i class="fa-solid fa-user-lock mr-1"></i> Login Admin
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO / BANNER UTAMA -->
+    <section id="beranda" class="relative bg-slate-950 text-white py-16 md:py-24 px-4 overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center relative z-10">
+            <div>
+                <span id="hero-badge" class="editable inline-block bg-amber-500/10 text-amber-400 text-xs font-bold px-3.5 py-1.5 rounded-full border border-amber-500/30 mb-5 tracking-wide">
+                    Penerimaan Peserta Didik Baru TA 2026/2027
+                </span>
+                <h2 id="hero-title" class="editable text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight mb-5">
+                    Selamat Datang di SMAN 1 Jongkong
+                </h2>
+                <p id="hero-desc" class="editable text-gray-300 text-sm sm:text-base leading-relaxed mb-8">
+                    Mewujudkan generasi penerus bangsa yang bertakwakal, cerdas, berkarakter mulia, serta siap bersaing di era digital global melalui pendidikan berkualitas tinggi.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#ppdb" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-3.5 rounded-xl text-sm transition-all shadow-lg hover:shadow-amber-500/20 flex items-center gap-2">
+                        <i class="fa-solid fa-file-signature"></i> Daftar PPDB Online
+                    </a>
+                    <a href="#profil" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3.5 rounded-xl text-sm border border-white/20 transition-all backdrop-blur-sm">
+                        Jelajahi Profil Sekolah
+                    </a>
+                </div>
+            </div>
+            <div class="relative group">
+                <img id="hero-image" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80" alt="Gedung SMAN 1 Jongkong" class="rounded-2xl shadow-2xl border-4 border-white/10 w-full h-80 md:h-96 object-cover">
+                <button id="btn-edit-hero-img" onclick="changeImage('hero-image')" class="hidden absolute bottom-4 right-4 bg-amber-500 hover:bg-amber-600 text-slate-900 px-4 py-2 rounded-xl text-xs font-bold shadow-lg flex items-center gap-2 transition-all">
+                    <i class="fa-solid fa-camera"></i> Ganti Foto Banner
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION INFO PPDB -->
+    <section id="ppdb" class="py-12 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-y border-amber-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-amber-200/80 grid md:grid-cols-3 gap-6 items-center">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2 text-amber-600 font-bold text-xs uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-bullhorn"></i> Informasi Resmi PPDB
+                    </div>
+                    <h3 id="ppdb-title" class="editable text-2xl font-extrabold text-slate-900 mb-2">Pendaftaran Siswa Baru Telah Dibuka!</h3>
+                    <p id="ppdb-desc" class="editable text-gray-600 text-sm mb-4 leading-relaxed">
+                        Segera daftarkan diri Anda menjadi bagian dari keluarga besar SMA Negeri 1 Jongkong. Unduh brosur, lengkapi berkas, dan ikuti alur pendaftaran secara online.
+                    </p>
+                    <div class="flex flex-wrap gap-4 text-xs font-semibold text-gray-700">
+                        <span class="flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1.5 rounded-lg border border-green-200"><i class="fa-solid fa-calendar-check text-green-600"></i> Gelombang 1: Mei - Juni 2026</span>
+                        <span class="flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-200"><i class="fa-solid fa-user-graduate text-blue-600"></i> Kuota: 216 Siswa Baru</span>
+                    </div>
+                </div>
+                <div class="text-center md:text-right">
+                    <a id="ppdb-link-btn" href="#ppdb" class="inline-block bg-blue-950 hover:bg-blue-900 text-amber-400 font-bold px-6 py-3.5 rounded-xl text-sm shadow-md transition-all">
+                        <i class="fa-solid fa-link mr-1.5"></i> Portal Informasi PPDB
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFIL SEKOLAH -->
+    <section id="profil" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-blue-950 tracking-tight">Profil & Visi Misi</h2>
+                <div class="h-1 w-16 bg-amber-500 mx-auto my-3 rounded-full"></div>
+                <p id="profil-subtitle" class="editable text-gray-500 text-sm">Mengenal lebih dekat fondasi dan tujuan pendidikan SMA Negeri 1 Jongkong.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                    <div class="w-12 h-12 bg-blue-950 text-amber-400 rounded-xl flex items-center justify-center text-xl font-bold mb-5 shadow-sm">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">Visi Sekolah</h3>
+                    <p id="visi-text" class="editable text-gray-600 text-sm leading-relaxed">
+                        "Terwujudnya Peserta Didik yang Beriman, Bertaqwa, Berprestasi Tinggi, Berkarakter Pancasila, serta Peduli Terhadap Lingkungan Hidup."
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-6 sm:p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                    <div class="w-12 h-12 bg-amber-500 text-slate-950 rounded-xl flex items-center justify-center text-xl font-bold mb-5 shadow-sm">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">Misi Utama</h3>
+                    <ul id="misi-list" class="editable text-gray-600 text-sm space-y-2.5 list-disc list-inside">
+                        <li>Menyelenggarakan pembelajaran efektif berorientasi pada pengembangan Iptek dan Imtaq.</li>
+                        <li>Mengembangkan bakat dan minat siswa melalui kegiatan ekstrakurikuler yang beragam.</li>
+                        <li>Menanamkan kedisiplinan dan budi pekerti luhur dalam kebiasaan sehari-hari.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRESTASI SEKOLAH -->
+    <section id="prestasi" class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-blue-950 tracking-tight">Prestasi Siswa</h2>
+                    <div class="h-1 w-16 bg-amber-500 my-2 rounded-full"></div>
+                    <p class="text-gray-500 text-sm">Raihan kebanggaan dari berbagai kompetisi dan kejuaraan.</p>
+                </div>
+                <button id="btn-add-prestasi" onclick="addPrestasiCard()" class="hidden bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition-all mt-4 sm:mt-0">
+                    <i class="fa-solid fa-plus mr-1"></i> Tambah Prestasi
+                </button>
+            </div>
+
+            <div id="prestasi-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="prestasi-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=600&q=80" alt="Prestasi" class="card-img w-full h-48 object-cover">
+                        <span class="card-badge editable absolute top-3 right-3 bg-amber-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-lg shadow">Tahun 2025</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="card-title editable font-bold text-slate-900 text-base mb-2">Juara 1 OSN Matematika Tingkat Kabupaten</h3>
+                        <p class="card-desc editable text-gray-600 text-xs leading-relaxed mb-4">
+                            Diraih oleh siswa SMAN 1 Jongkong dalam ajang Olimpiade Sains Nasional jenjang SMA/MA.
+                        </p>
+                        <div class="admin-card-controls hidden flex gap-2 border-t pt-3">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-3 py-1 rounded-lg text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="prestasi-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80" alt="Prestasi" class="card-img w-full h-48 object-cover">
+                        <span class="card-badge editable absolute top-3 right-3 bg-amber-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-lg shadow">Tahun 2025</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="card-title editable font-bold text-slate-900 text-base mb-2">Medali Emas Kejuaraan Futsal Pelajar</h3>
+                        <p class="card-desc editable text-gray-600 text-xs leading-relaxed mb-4">
+                            Tim Futsal SMAN 1 Jongkong meraih posisi puncak dalam Turnamen Antar Sekolah Regional.
+                        </p>
+                        <div class="admin-card-controls hidden flex gap-2 border-t pt-3">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-3 py-1 rounded-lg text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EKSTRAKURIKULER -->
+    <section id="ekstrakurikuler" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-blue-950 tracking-tight">Ekstrakurikuler</h2>
+                    <div class="h-1 w-16 bg-amber-500 my-2 rounded-full"></div>
+                    <p class="text-gray-500 text-sm">Wadah pengembangan minat, bakat, dan karakter siswa.</p>
+                </div>
+                <button id="btn-add-eskul" onclick="addEskulCard()" class="hidden bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition-all mt-4 sm:mt-0">
+                    <i class="fa-solid fa-plus mr-1"></i> Tambah Eskul
+                </button>
+            </div>
+
+            <div id="eskul-container" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Pramuka -->
+                <div class="eskul-card bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-md transition-all">
+                    <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=500&q=80" alt="Pramuka" class="card-img w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="card-title editable font-bold text-slate-900 text-sm mb-1">Pramuka Gudep SMAN 1</h3>
+                        <p class="card-desc editable text-gray-500 text-xs mb-3">Membentuk kedisiplinan, kemandirian, dan jiwa kepemimpinan.</p>
+                        <div class="admin-card-controls hidden flex gap-2 border-t pt-2">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2.5 py-1 rounded text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PMR -->
+                <div class="eskul-card bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-md transition-all">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=500&q=80" alt="PMR" class="card-img w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="card-title editable font-bold text-slate-900 text-sm mb-1">PMR Wira</h3>
+                        <p class="card-desc editable text-gray-500 text-xs mb-3">Keterampilan pertolongan pertama dan aksi kepedulian sosial.</p>
+                        <div class="admin-card-controls hidden flex gap-2 border-t pt-2">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2.5 py-1 rounded text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paskibra -->
+                <div class="eskul-card bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-md transition-all">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=500&q=80" alt="Paskibra" class="card-img w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="card-title editable font-bold text-slate-900 text-sm mb-1">Paskibraka</h3>
+                        <p class="card-desc editable text-gray-500 text-xs mb-3">Pelatihan baris-berbaris dan penanaman rasa nasionalisme tinggi.</p>
+                        <div class="admin-card-controls hidden flex gap-2 border-t pt-2">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2.5 py-1 rounded text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seni & Musik -->
+                <div class="eskul-card bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-md transition-all">
+                    <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=500&q=80" alt="Seni" class="card-img w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="card-title editable font-bold text-slate-900 text-sm mb-1">Sanggar Seni & Musik</h3>
+                        <p class="card-desc editable text-gray-500 text-xs mb-3">Pengembangan bakat seni tari daerah, musik, dan teater.</p>
+                        <div class="admin-card-controls hidden flex gap-2 border-t pt-2">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2.5 py-1 rounded text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BERITA TERBARU -->
+    <section id="berita" class="py-16 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-blue-950 tracking-tight">Berita & Kegiatan</h2>
+                    <div class="h-1 w-16 bg-amber-500 my-2 rounded-full"></div>
+                    <p class="text-gray-500 text-sm">Kabar terbaru aktivitas civitas akademika SMAN 1 Jongkong.</p>
+                </div>
+                <button id="btn-add-berita" onclick="addBeritaCard()" class="hidden bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition-all mt-4 sm:mt-0">
+                    <i class="fa-solid fa-plus mr-1"></i> Tambah Berita
+                </button>
+            </div>
+
+            <div id="berita-container" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="berita-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80" alt="Berita" class="card-img w-full h-48 object-cover">
+                    <div class="p-5">
+                        <span class="card-date editable text-xs text-amber-600 font-bold mb-1.5 block">15 Oktober 2026</span>
+                        <h3 class="card-title editable font-bold text-slate-900 text-base mb-2">Pelaksanaan Asesmen Nasional Berbasis Komputer</h3>
+                        <p class="card-desc editable text-gray-600 text-xs leading-relaxed mb-4">
+                            Seluruh siswa kelas XI mengikuti ANBK berjalan dengan lancar dan tertib di laboratorium komputer sekolah.
+                        </p>
+                        <div class="admin-card-controls hidden flex gap-2 border-t pt-3">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-3 py-1 rounded-lg text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERI / DOKUMENTASI -->
+    <section id="galeri" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-blue-950 tracking-tight">Galeri Dokumentasi</h2>
+                    <div class="h-1 w-16 bg-amber-500 my-2 rounded-full"></div>
+                    <p class="text-gray-500 text-sm">Dokumentasi momen berharga di SMA Negeri 1 Jongkong.</p>
+                </div>
+                <button id="btn-add-galeri" onclick="addGaleriCard()" class="hidden bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow transition-all mt-4 sm:mt-0">
+                    <i class="fa-solid fa-plus mr-1"></i> Tambah Foto
+                </button>
+            </div>
+
+            <div id="galeri-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="galeri-card relative group overflow-hidden rounded-2xl border border-gray-100 bg-gray-50">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=500&q=80" alt="Galeri" class="card-img w-full h-44 object-cover">
+                    <div class="p-2.5">
+                        <p class="card-caption editable text-xs text-gray-700 font-semibold text-center">Upacara Bendera Senin</p>
+                    </div>
+                    <div class="admin-card-controls hidden absolute top-2 right-2 flex gap-1 bg-black/80 backdrop-blur-sm p-1 rounded-lg">
+                        <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded text-[10px] font-bold">Ganti</button>
+                        <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">Hapus</button>
+                    </div>
+                </div>
+                <div class="galeri-card relative group overflow-hidden rounded-2xl border border-gray-100 bg-gray-50">
+                    <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=500&q=80" alt="Galeri" class="card-img w-full h-44 object-cover">
+                    <div class="p-2.5">
+                        <p class="card-caption editable text-xs text-gray-700 font-semibold text-center">Kegiatan Laboratorium</p>
+                    </div>
+                    <div class="admin-card-controls hidden absolute top-2 right-2 flex gap-1 bg-black/80 backdrop-blur-sm p-1 rounded-lg">
+                        <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded text-[10px] font-bold">Ganti</button>
+                        <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="kontak" class="bg-slate-950 text-gray-400 mt-auto pt-14 pb-8 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-10 mb-10">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <img id="footer-logo" src="https://images.unsplash.com/photo-1592280771190-3e2e4d571952?auto=format&fit=crop&w=150&q=80" alt="Logo SMAN 1 Jongkong" class="h-10 w-10 object-cover rounded-full border border-amber-500">
+                    <span id="footer-title" class="editable font-extrabold text-white text-base tracking-tight">SMAN 1 JONGKONG</span>
+                </div>
+                <p id="footer-about" class="editable text-xs leading-relaxed text-gray-400 mb-4">
+                    Mewujudkan insan yang bertakwa, berprestasi, berkarakter mulia, dan berwawasan lingkungan.
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase text-amber-500">Kontak Sekolah</h4>
+                <ul class="text-xs space-y-3">
+                    <li class="flex items-start gap-2.5"><i class="fa-solid fa-location-dot text-amber-400 mt-0.5"></i> <span id="footer-address" class="editable leading-relaxed">Jln. Pendidikan No. 1, Kec. Jongkong, Kab. Kapuas Hulu, Kalimantan Barat</span></li>
+                    <li class="flex items-center gap-2.5"><i class="fa-solid fa-phone text-amber-400"></i> <span id="footer-phone" class="editable">(0567) 123456 / +62 812-3456-7890</span></li>
+                    <li class="flex items-center gap-2.5"><i class="fa-solid fa-envelope text-amber-400"></i> <span id="footer-email" class="editable">info@sman1jongkong.sch.id</span></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white font-bold text-sm mb-4 tracking-wider uppercase text-amber-500">Media Sosial Resmi</h4>
+                <p class="text-xs text-gray-400 mb-4">Terhubung langsung dengan kanal informasi resmi kami:</p>
+                <div class="flex flex-col space-y-2.5 text-xs font-medium">
+                    <a id="foot-link-facebook" href="https://facebook.com" target="_blank" class="hover:text-amber-400 transition flex items-center gap-2.5">
+                        <i class="fa-brands fa-facebook-f text-amber-400 w-4 text-center"></i> <span id="lbl-facebook" class="editable">Facebook Sekolah</span>
+                    </a>
+                    <a id="foot-link-instagram" href="https://instagram.com" target="_blank" class="hover:text-amber-400 transition flex items-center gap-2.5">
+                        <i class="fa-brands fa-instagram text-amber-400 w-4 text-center"></i> <span id="lbl-instagram" class="editable">Instagram Kami</span>
+                    </a>
+                    <a id="foot-link-youtube" href="https://youtube.com" target="_blank" class="hover:text-amber-400 transition flex items-center gap-2.5">
+                        <i class="fa-brands fa-youtube text-amber-400 w-4 text-center"></i> <span id="lbl-youtube" class="editable">Channel YouTube</span>
+                    </a>
+                    <a id="foot-link-tiktok" href="https://tiktok.com" target="_blank" class="hover:text-amber-400 transition flex items-center gap-2.5">
+                        <i class="fa-brands fa-tiktok text-amber-400 w-4 text-center"></i> <span id="lbl-tiktok" class="editable">TikTok Official</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-slate-900 text-center text-xs text-gray-500 font-medium">
+            &copy; 2026 SMAN 1 Jongkong. Hak Cipta Dilindungi Undang-Undang.
+        </div>
+    </footer>
+
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="login-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-sm w-full shadow-2xl relative border border-gray-100">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-blue-950 text-amber-400 rounded-2xl flex items-center justify-center text-xl mx-auto mb-3 shadow-md">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-900">Login Admin</h3>
+                <p class="text-xs text-gray-500 mt-1">Masukkan kredensial untuk mengedit website</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Username</label>
+                    <input type="text" id="username" required class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 outline-none transition" placeholder="admin">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Password</label>
+                    <input type="password" id="password" required class="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-amber-500 outline-none transition" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-blue-950 hover:bg-blue-900 text-amber-400 font-bold py-3 rounded-xl text-sm transition-all shadow-md">
+                    Masuk Mode Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL KELOLA MEDSOS -->
+    <div id="sosmed-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative border border-gray-100">
+            <button onclick="closeSosmedModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-lg font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-share-nodes text-amber-500"></i> Kelola Tautan Media Sosial
+            </h3>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">URL Facebook</label>
+                    <input type="url" id="inp-url-facebook" class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500" placeholder="https://facebook.com/halaman">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">URL Instagram</label>
+                    <input type="url" id="inp-url-instagram" class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500" placeholder="https://instagram.com/akun">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">URL YouTube</label>
+                    <input type="url" id="inp-url-youtube" class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500" placeholder="https://youtube.com/@channel">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">URL TikTok</label>
+                    <input type="url" id="inp-url-tiktok" class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500" placeholder="https://tiktok.com/@akun">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1">URL WhatsApp</label>
+                    <input type="url" id="inp-url-whatsapp" class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500" placeholder="https://wa.me/628123456789">
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button onclick="closeSosmedModal()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-200">Batal</button>
+                <button onclick="saveSosmedLinks()" class="px-4 py-2 bg-blue-950 text-amber-400 rounded-xl text-xs font-bold hover:bg-blue-900">Simpan Tautan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GANTI GAMBAR / LOGO -->
+    <div id="img-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl relative border border-gray-100">
+            <button onclick="closeImgModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-base font-extrabold text-slate-900 mb-4">Ganti Gambar / Foto</h3>
+            
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold mb-1.5 text-gray-700">1. Upload dari Perangkat (HP/Laptop)</label>
+                    <input type="file" id="inp-file-img" accept="image/*" class="w-full text-xs text-gray-500 file:mr-2 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-amber-50 file:text-amber-700 font-semibold hover:file:bg-amber-100 cursor-pointer">
+                </div>
+                <div class="text-center text-gray-400 font-extrabold text-[10px] tracking-widest">- ATAU -</div>
+                <div>
+                    <label class="block font-bold mb-1.5 text-gray-700">2. Gunakan URL Gambar Internet</label>
+                    <input type="url" id="inp-url-img" class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-amber-500" placeholder="https://domain.com/foto.jpg">
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end gap-2">
+                <button onclick="closeImgModal()" class="px-3.5 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-bold hover:bg-gray-200">Batal</button>
+                <button onclick="applyImageChange()" class="px-4 py-2 bg-amber-500 text-slate-950 rounded-xl text-xs font-extrabold hover:bg-amber-600">Ganti Gambar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & LOCALSTORAGE PERSISTENCE -->
+    <script>
+        let isAdmin = false;
+        let currentEditingImgTarget = null;
+
+        // Inisialisasi saat Halaman Dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedData();
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // Modal Login Handlers
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
+
+            if (u === 'admin' && p === 'admin123') {
+                isAdmin = true;
+                closeLoginModal();
+                enableAdminMode();
+                showNotification('Login Berhasil! Anda berada dalam Mode Admin.');
+            } else {
+                showNotification('Username atau Password salah! (Default: admin / admin123)');
+            }
+        }
+
+        function enableAdminMode() {
+            document.getElementById('admin-bar').classList.remove('hidden');
+            document.getElementById('logo-edit-overlay').classList.remove('hidden');
+            document.getElementById('btn-edit-hero-img').classList.remove('hidden');
+            document.getElementById('btn-add-prestasi').classList.remove('hidden');
+            document.getElementById('btn-add-eskul').classList.remove('hidden');
+            document.getElementById('btn-add-berita').classList.remove('hidden');
+            document.getElementById('btn-add-galeri').classList.remove('hidden');
+
+            // Aktifkan Kontrol Kartu
+            document.querySelectorAll('.admin-card-controls').forEach(el => el.classList.remove('hidden'));
+
+            // Aktifkan Edit Teks Langsung
+            document.querySelectorAll('.editable').forEach(el => {
+                el.contentEditable = "true";
+                el.classList.add('editable-active');
+            });
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            document.getElementById('admin-bar').classList.add('hidden');
+            document.getElementById('logo-edit-overlay').classList.add('hidden');
+            document.getElementById('btn-edit-hero-img').classList.add('hidden');
+            document.getElementById('btn-add-prestasi').classList.add('hidden');
+            document.getElementById('btn-add-eskul').classList.add('hidden');
+            document.getElementById('btn-add-berita').classList.add('hidden');
+            document.getElementById('btn-add-galeri').classList.add('hidden');
+
+            document.querySelectorAll('.admin-card-controls').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.editable').forEach(el => {
+                el.contentEditable = "false";
+                el.classList.remove('editable-active');
+            });
+
+            showNotification('Mode Admin Ditutup.');
+        }
+
+        // Logo Click Handler
+        function handleLogoClick() {
+            if (isAdmin) {
+                openImgModal('site-logo');
+            }
+        }
+
+        // Change Image Dialog
+        function changeImage(targetId) {
+            openImgModal(targetId);
+        }
+
+        function openImgModal(target) {
+            currentEditingImgTarget = target;
+            document.getElementById('inp-file-img').value = '';
+            document.getElementById('inp-url-img').value = '';
+            document.getElementById('img-modal').classList.remove('hidden');
+        }
+
+        function closeImgModal() {
+            document.getElementById('img-modal').classList.add('hidden');
+        }
+
+        function applyImageChange() {
+            const fileInp = document.getElementById('inp-file-img');
+            const urlInp = document.getElementById('inp-url-img').value.trim();
+
+            if (fileInp.files && fileInp.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    setImgSrc(currentEditingImgTarget, e.target.result);
+                    closeImgModal();
+                };
+                reader.readAsDataURL(fileInp.files[0]);
+            } else if (urlInp) {
+                setImgSrc(currentEditingImgTarget, urlInp);
+                closeImgModal();
+            } else {
+                showNotification('Pilih file gambar atau masukkan URL gambar!');
+            }
+        }
+
+        function setImgSrc(target, src) {
+            if (typeof target === 'string') {
+                const el = document.getElementById(target);
+                if (el) el.src = src;
+                if (target === 'site-logo') {
+                    const foot = document.getElementById('footer-logo');
+                    if (foot) foot.src = src;
+                }
+            } else if (target instanceof HTMLElement) {
+                target.src = src;
+            }
+        }
+
+        // Card Operations
+        function editCardImg(btn) {
+            const card = btn.closest('.prestasi-card, .eskul-card, .berita-card, .galeri-card');
+            const img = card.querySelector('img');
+            currentEditingImgTarget = img;
+            openImgModal(img);
+        }
+
+        function deleteCard(btn) {
+            const card = btn.closest('.prestasi-card, .eskul-card, .berita-card, .galeri-card');
+            card.remove();
+        }
+
+        // Dynamic Card Adders
+        function addPrestasiCard() {
+            const container = document.getElementById('prestasi-container');
+            const html = `
+                <div class="prestasi-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=600&q=80" alt="Prestasi" class="card-img w-full h-48 object-cover">
+                        <span class="card-badge editable editable-active absolute top-3 right-3 bg-amber-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-lg shadow" contenteditable="true">Tahun 2026</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="card-title editable editable-active font-bold text-slate-900 text-base mb-2" contenteditable="true">Judul Prestasi Baru</h3>
+                        <p class="card-desc editable editable-active text-gray-600 text-xs leading-relaxed mb-4" contenteditable="true">
+                            Tuliskan deskripsi singkat mengenai prestasi yang berhasil diraih.
+                        </p>
+                        <div class="admin-card-controls flex gap-2 border-t pt-3">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-3 py-1 rounded-lg text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addEskulCard() {
+            const container = document.getElementById('eskul-container');
+            const html = `
+                <div class="eskul-card bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 hover:shadow-md transition-all">
+                    <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=500&q=80" alt="Eskul" class="card-img w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="card-title editable editable-active font-bold text-slate-900 text-sm mb-1" contenteditable="true">Nama Eskul</h3>
+                        <p class="card-desc editable editable-active text-gray-500 text-xs mb-3" contenteditable="true">Deskripsi singkat kegiatan ekstrakurikuler.</p>
+                        <div class="admin-card-controls flex gap-2 border-t pt-2">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2.5 py-1 rounded text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2.5 py-1 rounded text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addBeritaCard() {
+            const container = document.getElementById('berita-container');
+            const html = `
+                <div class="berita-card bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80" alt="Berita" class="card-img w-full h-48 object-cover">
+                    <div class="p-5">
+                        <span class="card-date editable editable-active text-xs text-amber-600 font-bold mb-1.5 block" contenteditable="true">Tanggal Berita</span>
+                        <h3 class="card-title editable editable-active font-bold text-slate-900 text-base mb-2" contenteditable="true">Judul Berita Baru</h3>
+                        <p class="card-desc editable editable-active text-gray-600 text-xs leading-relaxed mb-4" contenteditable="true">Ringkasan artikel berita atau kegiatan terbaru sekolah.</p>
+                        <div class="admin-card-controls flex gap-2 border-t pt-3">
+                            <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-3 py-1 rounded-lg text-xs font-bold">Ganti Foto</button>
+                            <button onclick="deleteCard(this)" class="bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-bold ml-auto">Hapus</button>
+                        </div>
+                    </div>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addGaleriCard() {
+            const container = document.getElementById('galeri-container');
+            const html = `
+                <div class="galeri-card relative group overflow-hidden rounded-2xl border border-gray-100 bg-gray-50">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=500&q=80" alt="Galeri" class="card-img w-full h-44 object-cover">
+                    <div class="p-2.5">
+                        <p class="card-caption editable editable-active text-xs text-gray-700 font-semibold text-center" contenteditable="true">Judul Foto</p>
+                    </div>
+                    <div class="admin-card-controls absolute top-2 right-2 flex gap-1 bg-black/80 backdrop-blur-sm p-1 rounded-lg">
+                        <button onclick="editCardImg(this)" class="bg-amber-500 text-slate-900 px-2 py-0.5 rounded text-[10px] font-bold">Ganti</button>
+                        <button onclick="deleteCard(this)" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px] font-bold">Hapus</button>
+                    </div>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        // Sosmed Handlers
+        function openSosmedModal() {
+            document.getElementById('inp-url-facebook').value = document.getElementById('top-link-facebook').href;
+            document.getElementById('inp-url-instagram').value = document.getElementById('top-link-instagram').href;
+            document.getElementById('inp-url-youtube').value = document.getElementById('top-link-youtube').href;
+            document.getElementById('inp-url-tiktok').value = document.getElementById('top-link-tiktok').href;
+            document.getElementById('inp-url-whatsapp').value = document.getElementById('top-link-whatsapp').href;
+            document.getElementById('sosmed-modal').classList.remove('hidden');
+        }
+
+        function closeSosmedModal() {
+            document.getElementById('sosmed-modal').classList.add('hidden');
+        }
+
+        function saveSosmedLinks() {
+            const fb = document.getElementById('inp-url-facebook').value.trim();
+            const ig = document.getElementById('inp-url-instagram').value.trim();
+            const yt = document.getElementById('inp-url-youtube').value.trim();
+            const tt = document.getElementById('inp-url-tiktok').value.trim();
+            const wa = document.getElementById('inp-url-whatsapp').value.trim();
+
+            if (fb) { document.getElementById('top-link-facebook').href = fb; document.getElementById('foot-link-facebook').href = fb; }
+            if (ig) { document.getElementById('top-link-instagram').href = ig; document.getElementById('foot-link-instagram').href = ig; }
+            if (yt) { document.getElementById('top-link-youtube').href = yt; document.getElementById('foot-link-youtube').href = yt; }
+            if (tt) { document.getElementById('top-link-tiktok').href = tt; document.getElementById('foot-link-tiktok').href = tt; }
+            if (wa) { document.getElementById('top-link-whatsapp').href = wa; }
+
+            closeSosmedModal();
+            showNotification('Tautan Media Sosial berhasil diperbarui!');
+        }
+
+        // Persistensi Data (localStorage)
+        function saveAllChanges() {
+            const data = {
+                textData: {},
+                imgSources: {},
+                containers: {
+                    prestasi: document.getElementById('prestasi-container').innerHTML,
+                    eskul: document.getElementById('eskul-container').innerHTML,
+                    berita: document.getElementById('berita-container').innerHTML,
+                    galeri: document.getElementById('galeri-container').innerHTML
+                },
+                sosmed: {
+                    fb: document.getElementById('top-link-facebook').href,
+                    ig: document.getElementById('top-link-instagram').href,
+                    yt: document.getElementById('top-link-youtube').href,
+                    tt: document.getElementById('top-link-tiktok').href,
+                    wa: document.getElementById('top-link-whatsapp').href
+                }
+            };
+
+            document.querySelectorAll('.editable').forEach((el) => {
+                if (el.id) data.textData[el.id] = el.innerHTML;
+            });
+
+            document.querySelectorAll('img').forEach((img) => {
+                if (img.id) data.imgSources[img.id] = img.src;
+            });
+
+            localStorage.setItem('sman1_jongkong_webdata', JSON.stringify(data));
+            showNotification('Semua perubahan berhasil disimpan secara permanen!');
+        }
+
+        function loadSavedData() {
+            const saved = localStorage.getItem('sman1_jongkong_webdata');
+            if (!saved) return;
+
+            try {
+                const data = JSON.parse(saved);
+
+                if (data.textData) {
+                    Object.keys(data.textData).forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) el.innerHTML = data.textData[id];
+                    });
+                }
+
+                if (data.imgSources) {
+                    Object.keys(data.imgSources).forEach(id => {
+                        const img = document.getElementById(id);
+                        if (img) img.src = data.imgSources[id];
+                    });
+                }
+
+                if (data.containers) {
+                    if (data.containers.prestasi) document.getElementById('prestasi-container').innerHTML = data.containers.prestasi;
+                    if (data.containers.eskul) document.getElementById('eskul-container').innerHTML = data.containers.eskul;
+                    if (data.containers.berita) document.getElementById('berita-container').innerHTML = data.containers.berita;
+                    if (data.containers.galeri) document.getElementById('galeri-container').innerHTML = data.containers.galeri;
+                }
+
+                if (data.sosmed) {
+                    if (data.sosmed.fb) { document.getElementById('top-link-facebook').href = data.sosmed.fb; document.getElementById('foot-link-facebook').href = data.sosmed.fb; }
+                    if (data.sosmed.ig) { document.getElementById('top-link-instagram').href = data.sosmed.ig; document.getElementById('foot-link-instagram').href = data.sosmed.ig; }
+                    if (data.sosmed.yt) { document.getElementById('top-link-youtube').href = data.sosmed.yt; document.getElementById('foot-link-youtube').href = data.sosmed.yt; }
+                    if (data.sosmed.tt) { document.getElementById('top-link-tiktok').href = data.sosmed.tt; document.getElementById('foot-link-tiktok').href = data.sosmed.tt; }
+                    if (data.sosmed.wa) { document.getElementById('top-link-whatsapp').href = data.sosmed.wa; }
+                }
+            } catch (e) {
+                console.error("Gagal memuat data tersimpan:", e);
+            }
+        }
+
+        // Custom Notification Box
+        function showNotification(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 z-50 bg-slate-900 text-amber-400 px-5 py-3 rounded-2xl shadow-2xl text-xs font-bold border border-amber-500/30 flex items-center gap-2 animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-circle-info text-amber-400"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+    </script>
+</body>
+</html>
+```
